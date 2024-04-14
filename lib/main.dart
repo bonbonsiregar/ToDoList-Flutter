@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(TodoListApp());
+  runApp(const TodoListApp());
 }
 
 class TodoListApp extends StatefulWidget {
+  const TodoListApp({Key? key}) : super(key: key);
   @override
-  _TodoListAppState createState() => _TodoListAppState();
+  TodoListAppState createState() => TodoListAppState();
 }
 
-class _TodoListAppState extends State<TodoListApp> {
+class TodoListAppState extends State<TodoListApp> {
   final _todoItems = <String>[];
   final _textEditingController = TextEditingController();
 
