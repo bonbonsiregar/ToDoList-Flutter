@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'models/todo_item.dart';
 import 'repo/todo_repo.dart';
@@ -40,8 +41,14 @@ class TodoListAppState extends State<TodoListApp> {
   }
 
   Future<void> _addTodo(String title) async {
-    final newTodo = TodoItem(id: UniqueKey().toString(), title: title);
-    await _todoRepository.createTodo(newTodo);
+    final createdAt = Timestamp.now();
+    if (createdAt != null) {
+      final newTodo = TodoItem(
+          id: UniqueKey().toString(), title: title, createdAt: createdAt);
+      await _todoRepository.createTodo(newTodo);
+    } else {
+      print('Error Timestamp!!!');
+    }
   }
 
   Future<void> _toggleTodo(TodoItem todo) async {
@@ -61,6 +68,7 @@ class TodoListAppState extends State<TodoListApp> {
         textDirection: TextDirection.ltr,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text('To-Do List'),
           ),
           body: Column(
@@ -79,7 +87,18 @@ class TodoListAppState extends State<TodoListApp> {
                   itemBuilder: (context, index) {
                     final todo = _todoItems[index];
                     return ListTile(
-                      title: Text(todo.title),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(todo.title),
+                          SizedBox(height: 4.0),
+                          Text(
+                            '${_formatTimestamp(todo.createdAt)}',
+                            style: TextStyle(
+                                fontSize: 12.0, fontStyle: FontStyle.italic),
+                          ),
+                        ],
+                      ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -102,5 +121,14 @@ class TodoListAppState extends State<TodoListApp> {
         ),
       ),
     );
+  }
+}
+
+String _formatTimestamp(Timestamp? timestamp) {
+  if (timestamp != null) {
+    final dateTime = timestamp.toDate();
+    return '${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+  } else {
+    return "error";
   }
 }
