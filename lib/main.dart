@@ -75,7 +75,10 @@ class TodoListAppState extends State<TodoListApp> {
             children: [
               TextField(
                 controller: _textEditingController,
-                onSubmitted: _addTodo,
+                onSubmitted: (title) async {
+                  await _addTodo(title);
+                  _textEditingController.clear();
+                },
                 decoration: InputDecoration(
                   hintText: 'Enter a new todo item',
                   contentPadding: EdgeInsets.all(16.0),
@@ -107,7 +110,7 @@ class TodoListAppState extends State<TodoListApp> {
                             onChanged: (value) => _toggleTodo(todo),
                           ),
                           IconButton(
-                            icon: Icon(Icons.delete),
+                            icon: Icon(Icons.delete_outline),
                             onPressed: () => _deleteTodo(todo),
                           ),
                         ],
