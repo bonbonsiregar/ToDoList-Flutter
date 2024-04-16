@@ -24,7 +24,11 @@ class TodoRepository {
   }
 
   Stream<List<TodoItem>> getTodos() {
-    return _firestore.collection(_collectionName).snapshots().map((snapshot) {
+    return _firestore
+        .collection(_collectionName)
+        .orderBy('createdAt', descending: false)
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs.map((doc) => TodoItem.fromMap(doc.data())).toList();
     });
   }
