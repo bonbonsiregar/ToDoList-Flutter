@@ -63,11 +63,15 @@ class TodoListAppState extends State<TodoListApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
       title: 'To-Do List',
       home: Directionality(
         textDirection: TextDirection.ltr,
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Color.fromARGB(199, 86, 86, 187),
             centerTitle: true,
             title: Text('To-Do List'),
           ),
