@@ -42,14 +42,10 @@ class TodoListAppState extends State<TodoListApp> {
 
   Future<void> _addTodo(String title) async {
     final createdAt = Timestamp.now();
-    if (createdAt != null) {
-      final newTodo = TodoItem(
-          id: UniqueKey().toString(), title: title, createdAt: createdAt);
-      await _todoRepository.createTodo(newTodo);
-    } else {
-      print('Error Timestamp!!!');
+    final newTodo = TodoItem(
+        id: UniqueKey().toString(), title: title, createdAt: createdAt);
+    await _todoRepository.createTodo(newTodo);
     }
-  }
 
   Future<void> _toggleTodo(TodoItem todo) async {
     final updatedTodo = todo.copyWith(completed: !todo.completed);
@@ -71,9 +67,9 @@ class TodoListAppState extends State<TodoListApp> {
         textDirection: TextDirection.ltr,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Color.fromARGB(199, 86, 86, 187),
+            backgroundColor: const Color.fromARGB(199, 86, 86, 187),
             centerTitle: true,
-            title: Text('To-Do List'),
+            title: const Text('To-Do List'),
           ),
           body: Column(
             children: [
@@ -83,7 +79,7 @@ class TodoListAppState extends State<TodoListApp> {
                   await _addTodo(title);
                   _textEditingController.clear();
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter a new todo item',
                   contentPadding: EdgeInsets.all(16.0),
                 ),
@@ -98,10 +94,10 @@ class TodoListAppState extends State<TodoListApp> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(todo.title),
-                          SizedBox(height: 4.0),
+                          const SizedBox(height: 4.0),
                           Text(
-                            '${_formatTimestamp(todo.createdAt)}',
-                            style: TextStyle(
+                            _formatTimestamp(todo.createdAt),
+                            style: const TextStyle(
                                 fontSize: 12.0, fontStyle: FontStyle.italic),
                           ),
                         ],
@@ -114,7 +110,7 @@ class TodoListAppState extends State<TodoListApp> {
                             onChanged: (value) => _toggleTodo(todo),
                           ),
                           IconButton(
-                            icon: Icon(Icons.delete_outline),
+                            icon: const Icon(Icons.delete_outline),
                             onPressed: () => _deleteTodo(todo),
                           ),
                         ],
